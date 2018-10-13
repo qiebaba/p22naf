@@ -40,8 +40,8 @@ class RunTest:
 					depend_response_data = self.depend_data.get_data_for_key(i)
 					# 获取依赖的key
 					depend_key = self.data.get_depend_field(i)
-					request_data_dic = eval(request_data)
-					request_data_dic[depend_key] = depend_response_data
+					request_data.replace(depend_key,depend_response_data)
+
 			if header == 'write':
 				res = self.run_method.run_main(method, url, request_data)
 				op_header = OperationHeader(res)
