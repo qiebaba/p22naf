@@ -29,28 +29,32 @@ class ParseExcel:
     # 获取结束行号
     def get_row_number(self):
         try:
-            return self.sheet.max_row
+            row_num = self.sheet.max_row
+            return row_num
         except Exception as e:
             raise e
 
     # 获取结束列号
     def get_cols_number(self):
         try:
-            return self.sheet.max_column
+            col_num = self.sheet.max_column
+            return col_num
         except Exception as e:
             raise e
 
     # 获取莫一行的数据
     def get_row_data(self, row_no):
         try:
-            return self.sheet[row_no]
+            row_data = self.sheet[row_no]
+            return row_data
         except Exception as e:
             raise e
 
     # 获取某一列的数据
-    def get_column(self, col_no):
+    def get_column_data(self, col_no):
         try:
-            return self.sheet[col_no]
+            col_data = self.sheet[col_no]
+            return col_data
         except Exception as e:
             raise e
 
@@ -58,7 +62,7 @@ class ParseExcel:
     def get_cell_value(self, rowNo, colsNo):
         try:
             self.cell_value = self.sheet.cell(rowNo, colsNo)
-            return self.cell_Value
+            return self.cell_value.value
         except Exception as e:
             raise e
 
@@ -70,16 +74,16 @@ class ParseExcel:
             raise e
 
     # 根据单元格的坐标向单元格写入数据
-    def writeCell(self, content, rowNo=None, colsNo=None):
+    def write_cell(self, content, row_no=None, cols_no=None):
         try:
-            self.get_cell_value(rowNo, colsNo)
+            self.get_cell_value(row_no, cols_no)
             self.cell_value.value = content
             self.save_excel(self.excel_file)
         except Exception as e:
             raise e
 
     # 写入当前时间
-    def write_current_time(self, rowNo=None, colsNo=None):
+    def write_current_time(self, row_no=None, cols_no=None):
         try:
             now = int(time.time())
             time_array = time.localtime(now)
@@ -89,32 +93,22 @@ class ParseExcel:
         except Exception as e:
             raise e
 
-    # 根据caseid获取整行内容
-    def caseid_getrow_data(self, caseid):
-        self.rownum = self.caseid_getrow_num(caseid)
-        return self.getRow(self.rownum)
 
-    # 根据caseid获取行号
-    def caseid_getrow_num(self, caseid):
-        rownum = 0
-        self.colsdata = self.getColumn("A")
-        for coldata in self.colsdata:
-            if caseid == coldata.value:
-                return rownum
-            rownum = rownum + 1
+
+
 
 
 if __name__ == '__main__':
     pe = ParseExcel()
-    pe.loadWorkBook(r"..\dataconfig\testdata.xlsx")
-    sheet = pe.getSheetByName('sheet1')
-    print(pe.getRowNumber())
-    print(pe.getColsNumber())
-    print(pe.getRow(1))
-    print(pe.getColumn('A'))
+    pe.load_workbook(r"..\dataconfig\testdata.xlsx")
+    sheet = pe.get_sheet_by_name('sheet1')
+    print(pe.get_row_number())
+    print(pe.get_cols_number())
+    print(pe.get_row_data(1))
+    print(pe.get_column_data('A'))
 
-    print(pe.getCellOfValue(1, 2))
+    print(pe.get_cell_value(1, 2))
 
-    print(pe.caseid_getrow_num("xxb-01"))
+    print(pe.id_get_row_num("xxb-01"))
 
-    print(pe.caseid_getrow_data("xxb-01"))
+    print(pe.id_get_row_data("xxb-01"))
